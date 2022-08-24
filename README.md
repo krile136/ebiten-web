@@ -36,6 +36,11 @@ DB_PASSWORD=password
     エラーがここで出るので、一回これ実行
     npm install resolve-url-loader@^5.0.0 --save-dev --legacy-peer-deps
     npm run dev
+9. 新規登録できることを確認する
+10. ebitengineのプロジェクトを作る
+11. wasm_exec.jsとwasmファイルをpublicフォルダ配下に置く
+12. ログイン後のページのhome.blade.phpにwasmファイルを読みこむiframeを設定
+13. ログインするとあら不思議！ログインユーザー名がebitengineで表示できている
 
 
 ## mime typeについて
