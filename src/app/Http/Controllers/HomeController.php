@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\OneTimeToken;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -25,6 +26,13 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('home', compact('user'));
+        $plain_text_token = Str::random(40);
+        $one_time_token = OneTimeToken::create([
+            'user_id' => $user->id,
+            'token' => hash('sha256', $plain_text_token),
+            'is_used' => false,
+        ]);
+
+        return view('home', compact('user', 'plain_text_token'));
     }
 }

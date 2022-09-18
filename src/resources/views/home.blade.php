@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                <iframe src="" allow = "autoplay" width="640" height="480" srcdoc="
+                <iframe src="" allow = "autoplay" width="320" height="320" srcdoc="
                     <!DOCTYPE html>
                         <script src='js/wasm_exec.js'></script>
                         <script>
@@ -29,8 +29,8 @@
                             const go = new Go();
                             WebAssembly.instantiateStreaming(fetch('wasm/main.wasm'), go.importObject).then(result => {
                                 go.run(result.instance);
-                                setUserName('{{ $user->name  }}', function(userName){
-                                    console.log('ebitengine set userName :', userName)
+                                setUserId('{{ $user->id }}', '{{ $plain_text_token }}', function(userId){
+                                    {{-- console.log('ebitengine set userId :', userId) --}}
                                 });
                             });
                     </script>">

@@ -1,0 +1,18 @@
+### Get login user data
+GET http://localhost/api/user
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 76|YFX2PHLHb7Id9SeQpwXfL7YpMvlGBE6jljGrk7m7
+
+
+### log in API 
+POST http://localhost/api/authenticate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id" : "2",
+    "one_time_token":"louI3CG7s54hHEadvQ24tk2stjTWclF2o9HE8HKC"
+}
+
+###

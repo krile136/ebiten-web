@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,4 +40,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * user has many personalAccessTokens 
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function personalAccessTokens()
+    {
+        return $this->hasMany(PersonalAccessToken::class, 'tokenable_id');
+    }
+
+    /**
+     * user has many oneTimeTokens
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function oneTimeTokens()
+    {
+        return $this->hasMany(OneTimeToken::class);
+    }
+    
 }
