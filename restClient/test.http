@@ -15,4 +15,8 @@ Accept: application/json
     "one_time_token":"louI3CG7s54hHEadvQ24tk2stjTWclF2o9HE8HKC"
 }
 
-###
+### get CSRF 
+GET http://localhost:8081/sanctum/csrf-cookie
+Content-Type: application/json
+Accept: application/json
+X-Requested-With: XMLHttpRequest

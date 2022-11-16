@@ -23,7 +23,7 @@ class Firewall
      */
     public function handle(Request $request, Closure $next)
     {
-        logger()->debug($request->getHost());
+        logger()->debug($request->site);
         if (config('app.env') === 'local' || config('app.env') === 'ngrok' | $this->isAllowedIp($request->ip())) {
             return $next($request);
         }
