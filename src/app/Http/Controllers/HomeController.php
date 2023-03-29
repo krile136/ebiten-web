@@ -54,6 +54,30 @@ class HomeController extends Controller
     }
 
     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function minesweeper(): View
+    {
+        $user = Auth::user();
+        $plain_text_token = Str::random(40);
+        $one_time_token = OneTimeToken::query()->create(
+            [
+                'user_id' => $user->id,
+                'token' => hash('sha256', $plain_text_token),
+                'is_used' => false,
+            ]
+        );
+
+        $ciper_text = 'pNAd9y5cVWEH7LP+IVE+DuvLMWGfI4sgpV5tJ4RJGeM=';
+        $iv = '0de7e2e7fc41a0cccb16ef5e91186339';
+        $key = '645E739A7F9F162725C1533DC2C5E827';
+
+        return view('minesweeper', compact('user', 'plain_text_token'));
+    }
+
+    /**
      * Return input view
      *
      * @return View|Factory

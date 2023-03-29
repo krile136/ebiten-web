@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -42,11 +44,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * user has many personalAccessTokens 
+     * user has many personalAccessTokens
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function personalAccessTokens()
+    public function personalAccessTokens(): HasMany
     {
         return $this->hasMany(PersonalAccessToken::class, 'tokenable_id');
     }
@@ -56,9 +58,18 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function oneTimeTokens()
+    public function oneTimeTokens(): HasMany
     {
         return $this->hasMany(OneTimeToken::class);
     }
-    
+
+    /**
+     * user has one score
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function score(): HasOne
+    {
+        return $this->hasOne(Score::class);
+    }
 }
