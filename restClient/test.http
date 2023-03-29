@@ -6,7 +6,7 @@ Authorization: Bearer 76|YFX2PHLHb7Id9SeQpwXfL7YpMvlGBE6jljGrk7m7
 
 
 ### log in API 
-POST http://localhost/api/authenticate
+POST http://localhost:8081/api/authenticate
 Content-Type: application/json
 Accept: application/json
 
@@ -20,3 +20,14 @@ GET http://localhost:8081/sanctum/csrf-cookie
 Content-Type: application/json
 Accept: application/json
 X-Requested-With: XMLHttpRequest
+
+### post score
+POST http://localhost:8081/api/score
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id" : "2",
+    "score":"100"
+}
+

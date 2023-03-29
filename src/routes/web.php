@@ -21,4 +21,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/minesweeper', [App\Http\Controllers\HomeController::class, 'minesweeper'])->name('minesweeper');
+
 Route::get('/input', [App\Http\Controllers\HomeController::class, 'input'])->name('input');

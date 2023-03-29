@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ScoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $user = $request->user();
     logger()->info($request->ip());
+
     return response()->json(['userName' => $user->name, 'email' => $user->email], 200);
 });
 
 Route::post('/authenticate', [App\Http\Controllers\Api\AuthController::class, 'authenticate']);
+
+Route::post('/score', [ScoreController::class, 'storeOrUpdate']);

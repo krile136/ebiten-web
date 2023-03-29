@@ -69,13 +69,14 @@ class AuthController extends Controller
             $iv = bin2hex(random_bytes(16));
             logger()->debug('iv::'.$iv);
 
-            $key = '645E739A7F9F162725C1533DC2C5E827';
+            $key = config('aes.key');
 
             $json_string = json_encode(['api_token' => $token->plainTextToken]);
             $encrypted = openssl_encrypt($json_string, 'AES-128-CBC', hex2bin($key), 0, hex2bin($iv));
             $data = $iv.'|'.$encrypted;
             DB::commit();
         } catch (Exception $e) {
+            logger()->error($e);
             DB::rollBack();
         }
 
