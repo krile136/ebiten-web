@@ -27,7 +27,33 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "user_id" : "2",
-    "score":"100"
+    "data" : "1bb52a6367ab161d6b485d936073f572|Mxgp9BnXiehQraD8QgORQ080DbAoxhcXvYc0QhTohUg="
 }
+
+
+### 配列データを暗号化した文字列を取得する 
+POST http://localhost:8081/api/encrypt
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 4ad93fc99068b5d8a9658a7eb11fdb14c66dffe313d9675b792e6067408b93 
+
+{
+    "user_id" : "1",
+    "score":"31"
+}
+
+### 暗号化された文字列を配列に復号する 
+POST http://localhost:8081/api/decrypt
+Content-Type: application/json
+Accept: application/json
+
+{
+"data": "92ab856d922db9409ef30b576cdba694|7Vv2VhtFc1/z+6K3AEyKpGXzBpnf9nGP0jGH0oXdi/f573740a2f368b2dc101a2d21763007a|mJgIVUtulMl6Xtv/GEkHXE8SX9LEnxIkjS1LeolfOR6dLINIlaaVDxq6dXWPuol4iZXbh5VZE4tsRyF0GNmtFA==fc841be136510b03b9c3de5a8ad87d1b|AciGua4naVqI9ovwPN26FF4cot+uC7xTmXEJ/I3vzfY=4"
+}
+
+### sanctum csrf cookie ?
+GET http://localhost:8081/sanctum/csrf-cookie
+
+
+
 

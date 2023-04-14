@@ -3,48 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Score;
-use App\Models\User;
+use App\UseCases\Api\Score\StoreOrUpdateAction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class ScoreController extends Controller
 {
-    public function storeOrUpdate(Request $request)
+    /**
+     * ハイスコアを作成/更新をする
+     *
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function storeOrUpdate(StoreOrUpdateAction $action, Request $request): JsonResponse
     {
-        $credentials = $request->validate(
-            [
-                'user_id' => ['required'],
-                'score' => ['required'],
-            ]
-        );
+        $body = $request->all();
 
-        $user_id = $credentials['user_id'];
-        $current_score = $credentials['score'];
+        /**
+         * @var string $encrypted
+         * @var MessageBag $error_bag
+         * */
+        [$encrypted, $error_bag] = $action($body);
+        if ($error_bag->isNotEmpty()) {
+            $error_message = $error_bag->get('error');
 
-        /** @var User $user */
-        $user = User::query()
-                ->where('id', $user_id)
-                ->first();
-
-        if ($user === null) {
-            // createする
-            $score = new Score();
-            $previous_score = 0;
-            $score->fill(['user_id' => $user_id, 'score' => $current_score])->save();
-        } else {
-            // updateする
-            /** @var Score $score */
-            $score = $user->score;
-            $previous_score = $score->score;
-            $score->fill(['score' => $current_score])->save();
+            return response()->json(['error' => $error_message], 500);
         }
 
-        $data = [
-            'is_new_record' => true,
-            'previous_score' => $previous_score,
-            'current_score' => $score,
-        ];
-
-        return response()->json(['data' => $data], 200);
+        return response()->json(['data' => $encrypted], 200);
     }
 }
