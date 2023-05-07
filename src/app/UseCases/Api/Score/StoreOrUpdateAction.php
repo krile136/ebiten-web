@@ -26,6 +26,9 @@ class StoreOrUpdateAction
     }
 
     /**
+     * スコアを受けてそれがNew Recordかどうかと
+     * スコアのランキングを10位まで返す
+     *
      * @param  array<mixed>  $request_body
      * @return array
      */
@@ -89,12 +92,30 @@ class StoreOrUpdateAction
             $best_score = $score->score;
             $is_new_record = $current_score > $best_score;
             if ($is_new_record) {
-                $score->fill(['score' => $best_score])->save();
+                $score->fill(['score' => $current_score])->save();
             }
         }
 
+        // ランキング上位5名を取得する
+        $ranking_users = User::query()
+                         ->join('scores', static function ($join) {
+                             $join->on('users.id', '=', 'scores.user_id')
+                                  ->orderByDesc('scores.score')
+                                  ->limit(5);
+                         })
+                         ->select('users.name', 'scores.score')
+                         ->selectRaw("users.id = {$user->id} as rank_in")
+                         ->orderByDesc('scores.score')
+                         ->get();
+
+        logger()->info('ranking_users', ['users' => $ranking_users->toArray()]);
+
+        // レスポンス用にebitengine側と変数名をあわせる
+        $players = $ranking_users->toArray();
+        $my_score = $best_score;
+
         // レスポンスデータを作って暗号化して返す
-        $response_data = compact('is_new_record', 'current_score', 'best_score');
+        $response_data = compact('my_score', 'players');
         $encrypted = $this->encrypt($response_data);
 
         return [$encrypted, $this->message_bag];

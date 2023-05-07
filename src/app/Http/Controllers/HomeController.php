@@ -74,7 +74,7 @@ class HomeController extends Controller
         $iv = '0de7e2e7fc41a0cccb16ef5e91186339';
         $key = '645E739A7F9F162725C1533DC2C5E827';
 
-        return view('minesweeper', compact('user', 'plain_text_token'));
+        return view('mineSweeper', compact('user', 'plain_text_token'));
     }
 
     /**
