@@ -1,5 +1,0 @@
-<?php
-
-namepsace App\Models;
-
-class Score 

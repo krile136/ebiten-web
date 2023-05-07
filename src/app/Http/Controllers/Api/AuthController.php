@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\OneTimeToken;
 use App\Models\User;
+use App\Traits\Aes;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\DB;
  **/
 class AuthController extends Controller
 {
+    use Aes;
+
     /**
      * Authenticate method
      *
@@ -33,6 +37,8 @@ class AuthController extends Controller
 
         $user_id = $credentials['user_id'];
         $plain_text_token = $credentials['one_time_token'];
+
+        Auth::loginUsingId($user_id);
 
         try {
             DB::beginTransaction();
@@ -63,17 +69,12 @@ class AuthController extends Controller
             $token = $user->createToken($user->name);
 
             session(['token' => $token->plainTextToken]);
+            logger()->debug(sprintf('token: %s', $token->accessToken));
             logger()->debug(sprintf('plain text token: %s', $token->plainTextToken));
 
-            $text = $token->plainTextToken;
-            $iv = bin2hex(random_bytes(16));
-            logger()->debug('iv::'.$iv);
+            $encrypt_data = ['api_token' => $token->plainTextToken];
+            $data = $this->encrypt($encrypt_data);
 
-            $key = config('aes.key');
-
-            $json_string = json_encode(['api_token' => $token->plainTextToken]);
-            $encrypted = openssl_encrypt($json_string, 'AES-128-CBC', hex2bin($key), 0, hex2bin($iv));
-            $data = $iv.'|'.$encrypted;
             DB::commit();
         } catch (Exception $e) {
             logger()->error($e);
