@@ -30,6 +30,14 @@ Accept: application/json
     "data" : "1bb52a6367ab161d6b485d936073f572|Mxgp9BnXiehQraD8QgORQ080DbAoxhcXvYc0QhTohUg="
 }
 
+### get ranking index 
+GET http://localhost:8081/api/score
+Content-Type: application/json
+Accept: application/json
+
+{
+}
+
 
 ### 配列データを暗号化した文字列を取得する 
 POST http://localhost:8081/api/encrypt

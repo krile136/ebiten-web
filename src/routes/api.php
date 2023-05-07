@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['apiToken'])->group(function () {
     Route::post('/score', [ScoreController::class, 'storeOrUpdate']);
+    Route::get('/score/{user_id}', [ScoreController::class, 'index']);
 });
 
 Route::post('/authenticate', [App\Http\Controllers\Api\AuthController::class, 'authenticate']);

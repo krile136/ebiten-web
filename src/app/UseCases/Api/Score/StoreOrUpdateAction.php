@@ -27,7 +27,7 @@ class StoreOrUpdateAction
 
     /**
      * スコアを受けてそれがNew Recordかどうかと
-     * スコアのランキングを10位まで返す
+     * スコアのランキングを5位まで返す
      *
      * @param  array<mixed>  $request_body
      * @return array
